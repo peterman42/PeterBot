@@ -1,0 +1,10 @@
+cmake_minimum_required(VERSION 2.6)
+project(PeterBot)
+set(HEADERS /home/pi/Documents/PeterBot/include /usr/local/include /usr/include /home/pi/Documents/crow/include)
+set(SOURCES src/serverBot.cpp src/main.cpp)
+include_directories(${HEADERS})
+add_executable(PeterBot ${SOURCES})
+target_link_libraries(PeterBot wiringPi pthread boost_system)
+target_compile_options(PeterBot PUBLIC -std=c++11 -g -Wall -pedantic -Wextra)
+install(TARGETS PeterBot DESTINATION build)
+

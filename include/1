@@ -1,0 +1,136 @@
+#ifndef ROBOT_H
+#define ROBOT_H
+
+#include <stdlib.h>
+#include "robot_right.h"
+#include "robot_left.h"
+#include "robot_front.h"
+#include "robot_back.h"
+
+//#include "route.h//
+
+class Robot
+{
+public:
+
+ 	Wheel* wheels;
+	int currentWheels;
+	int analogPins[4]{A0, A1, A2, A3};
+	int PWM[6]{3,5,6,9,10,11};
+	int digitalPINS[8]{ 0, 1, 2, 4, 7, 8, 12, 13 };
+	int positions[4]{WHEEL_POSITIONS::FRONT_RIGHT, WHEEL_POSITIONS::FRONT_LEFT, WHEEL_POSITIONS::BACK_RIGHT, WHEEL_POSITIONS::BACK_LEFT};
+	int numberOfWheels;
+	Move* move;
+	//int obstacleDistance;
+	//Route* currentRoute; // the route that is currently executed.
+	//std::vector<Route> allRoutes;
+
+	Robot() 
+		: numberOfWheels(0) 
+		, move(nullptr)
+		/*, currentRoute(nullptr)*/{}
+	~Robot()
+	{
+		for(int i=0;i<numberOfWheels;++i)
+		{
+			delete wheels[i];	
+		}
+		//free(wheels);
+	}
+
+	void init(int num);
+	void makeMove(int m, float speed);
+	void stopMove();
+	void addWheel(int position, int wheelIndex, int PWM_pin, int directionA_pin, int directionB_pin);
+	bool isMoving();
+	//void executeMove();
+	//void loadRoutes();
+};
+ 
+//////////////////////////////////////////////////////////////////
+void  Robot::init(int num)
+{
+	wheels = (Wheel*)malloc(sizeof(Wheel)*num);
+	numberOfWheels = num;
+}
+
+void Robot::addWheel(int position, int wheelIndex, int PWM_pin,int directionA_pin,int directionB_pin)
+{
+	Wheel* new_wheel = new Wheel(PWM_pin,directionA_pin,directionB_pin);
+	new_wheel->setPosition(position);
+	wheels[wheelIndex] = *new_wheel;
+}
+//////////////////////////////////////////////////////////////////
+void Robot::makeMove(int m, float speed){
+
+  if (m == ((int)MOVE::FRONT)) 
+  {
+	stopMove(); // stop the previous move if already there is one.
+
+	RobotFront* r = new RobotFront(speed, wheels);
+   	move = r;
+	move->begin(numberOfWheels);
+ 	return;
+  }
+  else if (m == ((int)MOVE::BACK))
+  {
+	  stopMove(); // stop the previous move if already there is one.
+	  RobotBack* b = new RobotBack(speed, wheels);
+	  move = b;
+	  move->begin(numberOfWheels);
+	  return;
+  }
+  else if (m == ((int)MOVE::RIGHT)) 
+  {
+	
+	stopMove(); // stop the previous move if already there is one.
+	RobotRight* r = new RobotRight(speed, wheels);
+	move = r;
+	move->begin(numberOfWheels);
+	return;
+  } 
+  else if (m == ((int)MOVE::LEFT)) 
+  {
+    
+	stopMove(); // stop the previous move if already there is one.
+	RobotLeft* r = new RobotLeft(speed, wheels);
+	move = r;
+	move->begin(numberOfWheels);
+   	return;
+  }
+  else if (m == ((int)MOVE::STOP))
+  {
+	  stopMove(); // stop the previous move if already there is one.
+	  return;
+  }
+}
+
+//////////////////////////////////////////////////////////////////
+void Robot::stopMove()
+{
+	if (move != nullptr)
+	{
+		move->stop(numberOfWheels);
+		delete move;
+		move = nullptr;
+	}
+}
+
+//////////////////////////////////////////////////////////////////
+bool Robot::isMoving()
+{
+	return (move != nullptr);
+}
+
+//////////////////////////////////////////////////////////////////
+//void Robot::executeRoute(std::string routeName){
+//	for (int i = 0; i < currentRoute->subroutesInCentiM.size();i++){
+//		makeMove(0, currentRoute->subroutesInCentiM[i]);
+//	}
+//}
+//
+////////////////////////////////////////////////////////////////////
+//void loadRoutes(){
+//
+//}
+#endif
