@@ -47,35 +47,35 @@ void ServerBot::Listen(HANDLE_FUNCTION_REF Handle)
 	// Listen for a connection
 	try
 	{
-	
-	while(1)
-	{
-		std::cout << "Waiting for a new client..." << std::endl;
-		newsockfd = accept(sockfd, (struct sockaddr* )&cli_addr, (socklen_t*)&clilen);
-		
-		// Check if we have a new connection.
-		if(newsockfd < 0)
-		{
-			std::cout << "Error in 'accept' function." << std::endl;
-			throw;				
-		}
+        while(1)
+        {
+            std::cout << "Waiting for a new client..." << std::endl;
+            newsockfd = accept(sockfd, (struct sockaddr* )&cli_addr, (socklen_t*)&clilen);
 
-		std::cout << "Established new connection." << std::endl;
+            // Check if we have a new connection.
+            if(newsockfd < 0)
+            {
+                std::cout << "Error in 'accept' function." << std::endl;
+                throw;
+            }
 
-		while(1)
-		{
-			ClientMessage message = getData(newsockfd);
-			std::cout << "Socket code :: " << newsockfd << std::endl;
-			if(message.status)
-			{
-				std::cout << "Got data: " << std::to_string(message.data) << std::endl;
-				// Execute the 'Handle' function in order to handle the client message.
-				Handle(message.data);
-				//break;				
-			}
-		}
-		close(newsockfd);
-	}
+            std::cout << "Established new connection." << std::endl;
+
+            ClientMessage message;
+            while(message.keepAlive)
+            {
+                message = getData(newsockfd);
+                std::cout << "Socket code :: " << newsockfd << std::endl;
+                if(message.status)
+                {
+                    std::cout << "Got data: " << std::to_string(message.data) << std::endl;
+                    // Execute the 'Handle' function in order to handle the client message.
+                    Handle(message.data);
+                    //break;
+                }
+            }
+            close(newsockfd);
+        }
 
 	}
 	catch(std::exception& e)
@@ -91,27 +91,34 @@ void ServerBot::Listen(HANDLE_FUNCTION_REF Handle)
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ClientMessage ServerBot::getData(int sockfd)
 {
-        char buffer[32];
-        int n;
+    char buffer[32];
+    int n;
 	ClientMessage message;
 	try
-	{	
-		if((n=read(sockfd,buffer,32)) < 0)
+    {
+        n = read(sockfd,buffer,32);
+        std::cout << "n :: " << n << std::endl;
+        if(n <= 0)
 		{
 			std::cout << "Failed to read data." << std::endl;
-			throw;			
-		}
-		
-		buffer[n] = '\0';
+            throw std::exception();
+        }
+        // Keep socket alive
+        message.keepAlive = true;
+        buffer[n] = '\0';
 		message.data = atoi(buffer);	
 		message.status = true;
 	}
 	catch(std::exception& e)
 	{
+        // Close socket.
+        message.keepAlive = false;
 		message.status = false;		
 	}
 	catch(...)
 	{
+        // Close socket.
+        message.keepAlive = false;
 		message.status = false;
 	}
 
