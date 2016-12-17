@@ -18,10 +18,12 @@ struct ClientMessage
 {
 	int data;
 	bool status;
+    bool keepAlive;
 
 	ClientMessage()
 	: data(0)
 	, status(false)	
+    , keepAlive(true)
 	{}
 };
 
