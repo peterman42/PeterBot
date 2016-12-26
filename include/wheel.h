@@ -2,17 +2,6 @@
 #define WHEEL_H
 
 #include "robot_commons.h"
-
-#ifdef ARDUINO_UNO
-#ifndef __AVR_ATmega328P__
-#define __AVR_ATmega328P__
-#endif
-#ifndef Arduino_h
-#include <Arduino.h>
-#endif
-#else
-#include <wiringPi.h>
-#endif
 #include "component.h"
 
 class Wheel: public Component

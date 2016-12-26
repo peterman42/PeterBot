@@ -3,6 +3,18 @@
 
 #define RASPBERRY_PI_3
 //#define ARDUINO_UNO
+
+#ifdef ARDUINO_UNO
+#ifndef __AVR_ATmega328P__
+#define __AVR_ATmega328P__
+#endif
+#ifndef Arduino_h
+#include <Arduino.h>
+#endif
+#else
+#include <wiringPi.h>
+#endif
+
 #define WHEELS 4
 
 enum WHEEL_POSITIONS
