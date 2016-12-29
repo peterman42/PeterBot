@@ -49,7 +49,7 @@ public:
 	void stopMove();
 	void addWheel(int position, int wheelIndex, int PWM_pin, int directionA_pin, int directionB_pin);
 	bool isMoving();
-    void monitorMove(std::vector<DistanceObject*>& UltraSensors);
+    void monitorMove(const std::vector<DistanceObject*>& UltraSensors);
 	//void executeMove();
 	//void loadRoutes();
 };
