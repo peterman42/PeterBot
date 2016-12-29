@@ -79,6 +79,32 @@ void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 
 }
 
+void LaunchUltraSensors(std::vector<DistanceObject*>& sensors)
+{
+    // Initialize the ultrasonic sensors and store them into a vector.
+
+    DistanceObject* UltraSensor1 = new DistanceObject;
+    UltraSensors.emplace_back(UltraSensor1);
+    // Sense for obstacle
+    std::thread sensorThread1(UltraSensor1.watchForObjects());
+
+    DistanceObject* UltraSensor2 = new DistanceObject;
+    UltraSensors.emplace_back(&UltraSensor2);
+    // Sense for obstacle
+    std::thread sensorThread2(UltraSensor2.watchForObjects());
+
+    DistanceObject* UltraSensor3 = new DistanceObject;
+    UltraSensors.emplace_back(UltraSensor3);
+    // Sense for obstacle
+    std::thread sensorThread3(UltraSensor3.watchForObjects());
+
+    DistanceObject* UltraSensor4 = new DistanceObject;
+    UltraSensors.emplace_back(UltraSensor4);
+    // Sense for obstacle
+    std::thread sensorThread4(UltraSensor4.watchForObjects());
+
+}
+
 int main()
 {
 	Robot robot;
@@ -95,28 +121,9 @@ int main()
     PinConfiguration pinConfig(1,4,5,23,27,28);
     RobotConfiguration(robot,pinConfig);
 
-    // Initialize the ultrasonic sensors and store them into a vector.
-    DistanceObject UltraSensor1;
-    UltraSensors.emplace_back(UltraSensor1);
-    // Sense for obstacle
-    std::thread sensorThread1(UltraSensor1.watchForObjects());
-
-    DistanceObject UltraSensor2;
-    UltraSensors.emplace_back(UltraSensor2);
-    // Sense for obstacle
-    std::thread sensorThread2(UltraSensor2.watchForObjects());
-
-    DistanceObject UltraSensor3;
-    UltraSensors.emplace_back(UltraSensor3);
-    // Sense for obstacle
-    std::thread sensorThread3(UltraSensor3.watchForObjects());
-
-    DistanceObject UltraSensor4;
-    UltraSensors.emplace_back(UltraSensor4);
-    // Sense for obstacle
-    std::thread sensorThread4(UltraSensor4.watchForObjects());
-
+    LaunchUltraSensors(UltraSensors);
     std::thread robotSense(robot.monitorMove(UltraSensors));
+
 
 	server.Start();
 	server.Listen([_robot,speed](int data)
