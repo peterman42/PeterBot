@@ -1,10 +1,13 @@
-#include "robot.h"
-#include "serverBot.h"
 #include <functional>
 #include <string>
-//#include "../amalgamate/crow_all.h"
+#include <thread>
+#include <vector>
+#include "robot.h"
+#include "serverBot.h"
+#include "distance_object.h"
 
 #define SERVER_PORT 8888
+#define ULTRA_SENSORS 4
 
 struct PinConfiguration
 {
@@ -53,13 +56,12 @@ struct PinConfiguration
 
 void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 {
-//	wiringPiSetup();
 	robot.init(2);
 
 	pinMode(pinConfig.enablePin_motor1,PWM_OUTPUT);
 	pinMode(pinConfig.in1Pin_motor1,OUTPUT);
 	pinMode(pinConfig.in2Pin_motor1,OUTPUT);
-	robot.addWheel(WHEEL_POSITIONS::FRONT_LEFT
+    robot.addWheel(POSITIONS::FRONT_LEFT
 		,0
 		,pinConfig.enablePin_motor1
 		,pinConfig.in1Pin_motor1
@@ -69,7 +71,7 @@ void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 	pinMode(pinConfig.enablePin_motor2,PWM_OUTPUT);
      	pinMode(pinConfig.in1Pin_motor2,OUTPUT);
        	pinMode(pinConfig.in2Pin_motor2,OUTPUT);
-       	robot.addWheel(WHEEL_POSITIONS::FRONT_RIGHT
+        robot.addWheel(POSITIONS::FRONT_RIGHT
 		,1
 		,pinConfig.enablePin_motor2
 		,pinConfig.in1Pin_motor2
@@ -77,75 +79,45 @@ void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 
 }
 
-
 int main()
 {
 	Robot robot;
 	Robot* _robot = &robot;
 	ServerBot server(SERVER_PORT);
-	
+    float speed = 1023;
+
+    std::vector<DistanceObject*> UltraSensors;
+    UltraSensors.reserve(ULTRA_SENSORS);
+
 	wiringPiSetup();
-	PinConfiguration pinConfig(1,4,5,23,27,28);
 
-	float speed = 1023;
+    // Initialize the pins for the motors.
+    PinConfiguration pinConfig(1,4,5,23,27,28);
+    RobotConfiguration(robot,pinConfig);
 
-	RobotConfiguration(robot,pinConfig);
-	//robot.makeMove(MOVE::FRONT,speed);
+    // Initialize the ultrasonic sensors and store them into a vector.
+    DistanceObject UltraSensor1;
+    UltraSensors.emplace_back(UltraSensor1);
+    // Sense for obstacle
+    std::thread sensorThread1(UltraSensor1.watchForObjects());
 
-/*	crow::SimpleApp app;
-	CROW_ROUTE(app,"/<int>")
-	([_robot,speed](int data)
-        {
-		int success = 1;
-                try
-                {       MOVE move = MOVE::STOP;
-                        switch(data)
-                        {
-                                case 0:
-                                {
-                                        move = MOVE::FRONT;
-                                        break;
-                                }
-                                case 1:
-                                {
-                                        move = MOVE::BACK;
-                                        break;
-                                }
-                                case 2:
-                                {
-                                        move = MOVE::RIGHT;
-                                        break;
-                                }
-                                case 3:
-                                {
-                                        move = MOVE::LEFT;
-                                        break;
-                                }
-                                case 4:
-                                {
-                                        move = MOVE::STOP;
-                                        break;
-                                }
-                        }
-                        _robot->makeMove(move,speed);
+    DistanceObject UltraSensor2;
+    UltraSensors.emplace_back(UltraSensor2);
+    // Sense for obstacle
+    std::thread sensorThread2(UltraSensor2.watchForObjects());
 
-			
-                }
-                catch(std::exception& e)
-                {
-			success = 0;
-                }
-                catch(...)
-                {
-			success = 0;
-                }
+    DistanceObject UltraSensor3;
+    UltraSensors.emplace_back(UltraSensor3);
+    // Sense for obstacle
+    std::thread sensorThread3(UltraSensor3.watchForObjects());
 
-		return crow::response(std::to_string(success));
-        });
+    DistanceObject UltraSensor4;
+    UltraSensors.emplace_back(UltraSensor4);
+    // Sense for obstacle
+    std::thread sensorThread4(UltraSensor4.watchForObjects());
 
-	app.port(SERVER_PORT).run();
+    std::thread robotSense(robot.monitorMove(UltraSensors));
 
-*/
 	server.Start();
 	server.Listen([_robot,speed](int data)
 	{

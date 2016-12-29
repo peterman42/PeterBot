@@ -7,7 +7,6 @@ This implementations is based on the  the Ultrasonic Sensor HC-SR04
 #ifndef DISTANCE_OBJECT_H
 #define DISTANCE_OBJECT_H
 
-#include <stdlib.h>
 #include "robot_commons.h"
 
 class DistanceObject
@@ -15,8 +14,16 @@ class DistanceObject
 public:
     int echoPin;
     int triggerPin;
+    int position;
+    int latestDistance;
 
     DistanceObject()
+    {}
+
+    DistanceObject(int echo, int trigger,int pos)
+        : echoPin(echo)
+        , triggerPin(trigger)
+        , position(pos)
     {}
 
     ~DistanceObject()
@@ -25,18 +32,8 @@ public:
     ///////////////////////////////////////////////////////////////////////
     void initialize();
     ///////////////////////////////////////////////////////////////////////
-    void senseObject();
+    int senseObject();
+    ///////////////////////////////////////////////////////////////////////
+    void watchForObjects();
 };
-
-///////////////////////////////////////////////////////////////////////
-void DistanceObject::initialize()
-{
-
-}
-///////////////////////////////////////////////////////////////////////
-void DistanceObject::senseObject()
-{
-
-}
-
 #endif /* DISTANCE_OBJECT_H */

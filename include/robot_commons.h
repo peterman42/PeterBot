@@ -17,7 +17,7 @@
 
 #define WHEELS 4
 
-enum WHEEL_POSITIONS
+enum POSITIONS
 {
 	FRONT_RIGHT=0,
 	FRONT_LEFT,
