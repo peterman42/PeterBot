@@ -1,0 +1,85 @@
+#!/bin/sh
+
+### BEGIN INIT INFO
+# Provides:		peterbotd
+# Required-Start:	$local_fs $syslog
+# Required-Stop:	$local_fs $syslog
+# Default-Start:	2 3 4 5
+# Default-Stop:		0 1 6
+# Description:		Peterman's robot. The script initializes the server and the camera.
+### END INIT INFO
+
+prog="peterbotd"
+
+#[ -e /etc/sysconfig/$prog ] && /etc/sysconfig/$prog
+
+SERVER=/usr/local/build/PeterBot
+MJPG_STREAMER_PATH=/home/pi/mjpg-streamer/mjpg-streamer-experimental
+CAMERA=$MJPG_STREAMER_PATH/mjpg_streamer -o "$MJPG_STREAMER_PATH/output_http.so -w $MJPG_STREAMER_PATH/www -c peterman:123456" -i "$MJPG_STREAMER_PATH/input_raspicam.so -x 1280 -y 720 -fps 15 -ex night -rot 180"
+SERVER_PID=/var/run/peterbotd/bot_server.pid
+CAMERA_PID=/var/run/peterbotd/bot_camera.pid 
+
+RUNAS=pi
+
+pidfile=${PIDFILE-/var/run/peterbotd/peterbotd.pid}
+lockfile=${LOCKFILE-/var/lock/subsys/peterbotd}
+
+PIDFILE=/var/run/peterbotd.pid
+LOGFILE_SERVER=/var/log/peterbotd/server.log
+LOGFILE_CAMERA=/var/log/peterbotd/camera.log
+
+start()
+{
+	if [ -f $lockfile ];
+	then
+		echo -n "peterbotd is already running"
+		return 1
+	fi
+
+	mkdir /var/run/peterbotd/ &
+	mkdir /var/log/peterbotd/ &
+	touch $lockfile
+	touch "$SERVER_PID" "$LOGFILE_SERVER" 
+	touch "$CAMERA_PID" "$LOGFILE_CAMERA"
+	/usr/local/build/PeterBot >> $LOGFILE_SERVER &
+	echo $! > $SERVER_PID 
+	# /var/run/peterbotd/peterbotd.pid
+
+	$MJPG_STREAMER_PATH/mjpg_streamer -o "$MJPG_STREAMER_PATH/output_http.so -w $MJPG_STREAMER_PATH/www -c peterman:123456" -i "$MJPG_STREAMER_PATH/input_raspicam.so -x 1280 -y 720 -fps 15 -ex night -rot 180" >> $LOGFILE_CAMERA &
+	echo $! > $CAMERA_PID 
+	# /var/run/peterbotd/peterbotd.pid
+
+	return 0	
+}
+
+stop()
+{
+#	kill -9 $(cat /var/run/peterbotd/peterbotd.pid)
+
+	kill -9 $(cat $SERVER_PID)
+	kill -9 $(cat $CAMERA_PID)
+       	rm -f ${lockfile} $SERVER_PID $CAMERA_PID $LOGFILE_SERVER $LOGFILE_CAMERA
+        rm -fr /var/run/peterbotd /var/log/peterbotd
+	echo "Service stopped"
+
+	return 0
+}
+
+case "$1" in
+        start)
+          start
+          ;;
+        stop)
+          stop
+          ;;
+        restart)
+          stop
+          start
+          ;;
+        status)
+          ;;
+        *)
+          echo "Usage: $0 {start|stop|status|restart}"
+esac
+
+exit 0
