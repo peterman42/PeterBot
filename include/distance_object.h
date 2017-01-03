@@ -14,13 +14,13 @@ class DistanceObject
 public:
     int echoPin;
     int triggerPin;
-    int position;
+    POSITIONS position;
     int latestDistance;
 
     DistanceObject()
     {}
 
-    DistanceObject(int echo, int trigger,int pos)
+    DistanceObject(int echo, int trigger, POSITIONS pos)
         : echoPin(echo)
         , triggerPin(trigger)
         , position(pos)

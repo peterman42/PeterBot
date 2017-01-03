@@ -80,16 +80,6 @@ bool Robot::isMoving()
     return (move != nullptr);
 }
 
-void Robot::monitorMove(const std::vector<DistanceObject*>& UltraSensors)
-{
-    for(auto sensor : UltraSensors)
-    {
-        if (sensor->latestDistance < obstacleDistanceThreshold)
-            stopMove();
-    }
-
-}
-
 
 //////////////////////////////////////////////////////////////////
 //void Robot::executeRoute(std::string routeName){

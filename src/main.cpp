@@ -5,9 +5,10 @@
 #include "robot.h"
 #include "serverBot.h"
 #include "distance_object.h"
+#include "move_watchdog.h"
 
 #define SERVER_PORT 8888
-#define ULTRA_SENSORS 4
+#define ULTRA_SENSORS_NUM 4
 
 struct PinConfiguration
 {
@@ -79,30 +80,21 @@ void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 
 }
 
-void LaunchUltraSensors(std::vector<DistanceObject*>& sensors)
+void InitUltraSensors(std::vector<DistanceObject*>& sensors)
 {
     // Initialize the ultrasonic sensors and store them into a vector.
 
     DistanceObject* UltraSensor1 = new DistanceObject;
-    UltraSensors.emplace_back(UltraSensor1);
-    // Sense for obstacle
-    std::thread sensorThread1(UltraSensor1.watchForObjects());
+    sensors.emplace_back(UltraSensor1);
 
     DistanceObject* UltraSensor2 = new DistanceObject;
-    UltraSensors.emplace_back(&UltraSensor2);
-    // Sense for obstacle
-    std::thread sensorThread2(UltraSensor2.watchForObjects());
+    sensors.emplace_back(UltraSensor2);
 
     DistanceObject* UltraSensor3 = new DistanceObject;
-    UltraSensors.emplace_back(UltraSensor3);
-    // Sense for obstacle
-    std::thread sensorThread3(UltraSensor3.watchForObjects());
+    sensors.emplace_back(UltraSensor3);
 
     DistanceObject* UltraSensor4 = new DistanceObject;
-    UltraSensors.emplace_back(UltraSensor4);
-    // Sense for obstacle
-    std::thread sensorThread4(UltraSensor4.watchForObjects());
-
+    sensors.emplace_back(UltraSensor4);
 }
 
 int main()
@@ -111,19 +103,21 @@ int main()
 	Robot* _robot = &robot;
 	ServerBot server(SERVER_PORT);
     float speed = 1023;
-
     std::vector<DistanceObject*> UltraSensors;
-    UltraSensors.reserve(ULTRA_SENSORS);
+    UltraSensors.reserve(ULTRA_SENSORS_NUM);
+    Move_Watchdog move_watchdog(UltraSensors);
 
-	wiringPiSetup();
+    wiringPiSetup();
 
     // Initialize the pins for the motors.
     PinConfiguration pinConfig(1,4,5,23,27,28);
     RobotConfiguration(robot,pinConfig);
 
-    LaunchUltraSensors(UltraSensors);
-    std::thread robotSense(robot.monitorMove(UltraSensors));
+    // Initialize the distance sensors.
+    InitUltraSensors(UltraSensors);
+    move_watchdog.StartUltraSensors();
 
+    //move_watchdog.start();
 
 	server.Start();
 	server.Listen([_robot,speed](int data)

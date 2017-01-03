@@ -4,7 +4,8 @@
 #include <stdlib.h>
 #include "robot_commons.h"
 #include "distance_object.h"
-
+#include "wheel.h"
+#include "move.h"
 #include <vector>
 //#include "route.h//
 
@@ -20,7 +21,6 @@ public:
     int positions[4]{POSITIONS::FRONT_RIGHT, POSITIONS::FRONT_LEFT, POSITIONS::BACK_RIGHT, POSITIONS::BACK_LEFT};
 	int numberOfWheels;
 	Move* move;
-    int obstacleDistanceThreshold;
 	//Route* currentRoute; // the route that is currently executed.
 	//std::vector<Route> allRoutes;
 
@@ -49,7 +49,6 @@ public:
 	void stopMove();
 	void addWheel(int position, int wheelIndex, int PWM_pin, int directionA_pin, int directionB_pin);
 	bool isMoving();
-    void monitorMove(const std::vector<DistanceObject*>& UltraSensors);
 	//void executeMove();
 	//void loadRoutes();
 };

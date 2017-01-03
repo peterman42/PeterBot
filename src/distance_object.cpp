@@ -18,9 +18,9 @@ void DistanceObject::initialize()
 int DistanceObject::senseObject()
 {
     // Send beacon signal.
-    digitalWrite(tiggerPin,HIGH);
-    delayMicroSeconds(20);
-    digitalWrite(tiggerPin,LOW);
+    digitalWrite(triggerPin,HIGH);
+    delayMicroseconds(20);
+    digitalWrite(triggerPin,LOW);
 
     //Wait for echo start.
     while(digitalRead(echoPin) == LOW);
@@ -37,7 +37,7 @@ int DistanceObject::senseObject()
 ///////////////////////////////////////////////////////////////////////
 /// This function will run up on a separate thread.
 ///
-void watchForObjects()
+void DistanceObject::watchForObjects()
 {
     while(1)
     {

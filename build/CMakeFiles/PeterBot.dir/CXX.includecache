@@ -1,0 +1,40 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../include/serverBot.h
+stdio.h
+-
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+netdb.h
+-
+string.h
+-
+stdlib.h
+-
+unistd.h
+-
+errno.h
+-
+exception
+-
+functional
+-
+
+/home/pi/Documents/PeterBot/src/serverBot.cpp
+serverBot.h
+/home/pi/Documents/PeterBot/src/serverBot.h
+iostream
+-
+string
+-
+
