@@ -12,8 +12,8 @@ public:
 	std::vector<std::string> routeName;
 	std::vector<Move> moves;
 public:
-	Route(){};
-	~Route(){};
+    Route() = default;
+    ~Route() = default;
 	void addX(float x);
 	void addY(float y);
 	void addSubroute(float distance);

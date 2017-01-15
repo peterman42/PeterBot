@@ -2,11 +2,16 @@
 #define ROBOT_H
 
 #include <stdlib.h>
+#include <vector>
 #include "robot_commons.h"
 #include "distance_object.h"
 #include "wheel.h"
 #include "move.h"
-#include <vector>
+#include "robot_right.h"
+#include "robot_left.h"
+#include "robot_front.h"
+#include "robot_back.h"
+
 //#include "route.h//
 
 class Robot

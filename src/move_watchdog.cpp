@@ -1,5 +1,6 @@
 #include "move_watchdog.h"
 
+//////////////////////////////////////////////////////////
 void Move_Watchdog::monitorMove()
 {
     try
@@ -20,11 +21,13 @@ void Move_Watchdog::monitorMove()
     }
 }
 
+//////////////////////////////////////////////////////////
 void Move_Watchdog::StartUltraSensors()
 {
     // Start the sensors to trigger waves and receive echoes.
     for(auto sensor : sensors)
     {
-        std::thread(sensor->watchForObjects());
+        if(sensor)
+            std::thread t(DistanceObject::watchForObjects,sensor);
     }
 }

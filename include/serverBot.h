@@ -44,12 +44,11 @@ public:
 	: port(DEFAULT_SERVER_PORT)
 	{}
 
-	ServerBot(int port)
+    explicit ServerBot(int port)
 	: port(port)
 	{}
 
-	~ServerBot()
-	{}
+    ~ServerBot() = default;
 
 	/////////////////////////////////////////////////
 	bool Start();

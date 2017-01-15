@@ -37,7 +37,7 @@ int DistanceObject::senseObject()
 ///////////////////////////////////////////////////////////////////////
 /// This function will run up on a separate thread.
 ///
-void DistanceObject::watchForObjects()
+void DistanceObject::watchForObjects(DistanceObject* obj)
 {
     while(1)
     {
@@ -45,12 +45,12 @@ void DistanceObject::watchForObjects()
         {
             delay(1000);
             // Sense any object.
-            senseObject();
+            if(obj)
+                obj->senseObject();
         }
         catch(...)
         {
             break;
         }
     }
-
 }

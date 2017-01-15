@@ -9,9 +9,8 @@ class Wheel: public Component
 public:
 	int directionA;
 	int directionB;
-	Wheel()
-	{};	
-	Wheel(int pin)
+
+    Wheel()
 		: Component(3)
 	{};
 	Wheel(int PWM_pin, int directionA_pin, int directionB_pin) 
@@ -25,7 +24,7 @@ public:
 		Wheel::setPin(directionA_pin, 1);
 		Wheel::setPin(directionB_pin, 2);
 	};
-	virtual ~Wheel(){};
+    virtual ~Wheel() = default;
 
 	///////////////////////////////////////////////////////////////////////
 	void start(int speed);

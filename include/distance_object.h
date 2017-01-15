@@ -17,8 +17,7 @@ public:
     POSITIONS position;
     int latestDistance;
 
-    DistanceObject()
-    {}
+    DistanceObject() = default;
 
     DistanceObject(int echo, int trigger, POSITIONS pos)
         : echoPin(echo)
@@ -26,14 +25,13 @@ public:
         , position(pos)
     {}
 
-    ~DistanceObject()
-    {}
+    ~DistanceObject() = default;
 
     ///////////////////////////////////////////////////////////////////////
     void initialize();
     ///////////////////////////////////////////////////////////////////////
     int senseObject();
     ///////////////////////////////////////////////////////////////////////
-    void watchForObjects();
+    static void watchForObjects(DistanceObject* obj);
 };
 #endif /* DISTANCE_OBJECT_H */

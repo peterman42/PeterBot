@@ -7,12 +7,10 @@ class RobotBack : public Move
 {
 public:
 
-	RobotBack()
-	{};
+    RobotBack() = default;
 	RobotBack(float speed, Wheel** wheels) 
 		: Move(speed, wheels){};
-	virtual	~RobotBack()
-	{};
+    virtual	~RobotBack() = default;
 
 	//////////////////////////////////////////////////////////
 	void begin(int num);

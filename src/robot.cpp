@@ -1,8 +1,4 @@
 #include "robot.h"
-#include "robot_right.h"
-#include "robot_left.h"
-#include "robot_front.h"
-#include "robot_back.h"
 
 //////////////////////////////////////////////////////////////////
 void  Robot::init(int num)

@@ -13,15 +13,13 @@ public:
     int obstacleDistanceThreshold;
     Robot* robot;
 
-    Move_Watchdog()
-    {}
+    Move_Watchdog() = default;
 
-    Move_Watchdog(std::vector<DistanceObject*> sensors)
+    explicit Move_Watchdog(std::vector<DistanceObject*> sensors)
         : sensors(sensors)
     {}
 
-    ~Move_Watchdog()
-    {}
+    ~Move_Watchdog() = default;
 
     //////////////////////////////////////////////////////////
     void monitorMove();

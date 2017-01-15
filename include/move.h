@@ -7,15 +7,13 @@ class Move
 {
 public:
 
-	Move()
-	{};
+    Move() = default;
 	Move(float speed,Wheel** wheels)
 	{
 		setSpeed(speed);
 		setWheels(wheels);
 	};
-	virtual ~Move()
-	{};
+    virtual ~Move() = default;
 
 	virtual void begin(int num)=0;
 	virtual void stop(int num) = 0;
@@ -28,28 +26,4 @@ public:
 	Wheel** wheels;
 	
 };
-
-//////////////////////////////////////////////////////////////////
-void Move::setWheels(Wheel** wheels)
-{
-	Move::wheels = wheels;
-}
-
-//////////////////////////////////////////////////////////////////
-Wheel** Move::getWheels()
-{
-	return Move::wheels;
-}
-
-//////////////////////////////////////////////////////////////////
-void Move::setSpeed(float speed)
-{
-	Move::speed = speed;
-}
-
-//////////////////////////////////////////////////////////////////
-float& Move::getSpeed()
-{
-	return Move::speed;
-}
 #endif

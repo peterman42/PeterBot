@@ -7,7 +7,7 @@ class Component
 {
 public:
 	Component() :pin(nullptr){};
-	Component(int numberOfpins) :pin(nullptr)
+    explicit Component(int numberOfpins) :pin(nullptr)
 	{
 		init(numberOfpins);
 	}
