@@ -2,6 +2,7 @@
 #define ROBOT_H
 
 #include <stdlib.h>
+#include <stdint.h>
 #include <vector>
 #include "robot_commons.h"
 #include "distance_object.h"
@@ -26,6 +27,7 @@ public:
     int positions[4]{POSITIONS::FRONT_RIGHT, POSITIONS::FRONT_LEFT, POSITIONS::BACK_RIGHT, POSITIONS::BACK_LEFT};
 	int numberOfWheels;
 	Move* move;
+    uint32_t distanceThreshold;
 	//Route* currentRoute; // the route that is currently executed.
 	//std::vector<Route> allRoutes;
 

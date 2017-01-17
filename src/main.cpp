@@ -101,6 +101,8 @@ int main()
 {
 	Robot robot;
 	Robot* _robot = &robot;
+    robot.distanceThreshold = 10;
+
 	ServerBot server(SERVER_PORT);
     float speed = 1023;
     std::vector<DistanceObject*> UltraSensors;
@@ -116,8 +118,7 @@ int main()
     // Initialize the distance sensors.
     InitUltraSensors(UltraSensors);
     move_watchdog.StartUltraSensors();
-
-    //move_watchdog.start();
+    move_watchdog.startMonitor(_robot);
 
 	server.Start();
 	server.Listen([_robot,speed](int data)
@@ -131,29 +132,28 @@ int main()
 					move = MOVE::FRONT;
 					break;	
 				}
-                                case 1:
-                                {
-                         		move = MOVE::BACK;
+                case 1:
+                {
+                    move = MOVE::BACK;
 					break;
-                                }
-                                case 2:
-                                {
-                         		move = MOVE::RIGHT;
+                }
+                case 2:
+                {
+                    move = MOVE::RIGHT;
 					break;
-                                }
-                                case 3:
-                                {	
-                         		move = MOVE::LEFT;
+                }
+                case 3:
+                {
+                    move = MOVE::LEFT;
 					break;
-                                }
-                                case 4:
-                                {
-                         		move = MOVE::STOP;
+                }
+                case 4:
+                {
+                    move = MOVE::STOP;
 					break;
-                                }
-			}
+                }
+            }
 			_robot->makeMove(move,speed);
-		
 		}
 		catch(std::exception& e)
 		{

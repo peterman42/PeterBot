@@ -6,12 +6,10 @@
 #include "robot.h"
 #include "distance_object.h"
 
-class Move_Watchdog : public std::thread
+class Move_Watchdog
 {
 public:
     std::vector<DistanceObject*> sensors;
-    int obstacleDistanceThreshold;
-    Robot* robot;
 
     Move_Watchdog() = default;
 
@@ -22,9 +20,13 @@ public:
     ~Move_Watchdog() = default;
 
     //////////////////////////////////////////////////////////
-    void monitorMove();
+    void StartUltraSensors();
 
     //////////////////////////////////////////////////////////
-    void StartUltraSensors();
+    void startMonitor(Robot* robot);
+
+private:
+    //////////////////////////////////////////////////////////
+    static void monitorMove(const std::vector<DistanceObject*>& sensors, Robot* const robot);
 };
 #endif
