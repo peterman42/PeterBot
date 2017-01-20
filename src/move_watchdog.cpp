@@ -1,11 +1,13 @@
 #include "move_watchdog.h"
 
+bool Move_Watchdog::alive = true;
+
 //////////////////////////////////////////////////////////
 void Move_Watchdog::monitorMove(const std::vector<DistanceObject*>& sensors,  Robot* const robot)
 {
     try
     {
-        while(1)
+        while(Move_Watchdog::alive)
         {
             delay(500);
             for(auto sensor : sensors)
@@ -33,7 +35,23 @@ void Move_Watchdog::StartUltraSensors()
 }
 
 //////////////////////////////////////////////////////////
+void Move_Watchdog::StopUltraSensors()
+{
+    DistanceObject::alive = false;
+}
+
+//////////////////////////////////////////////////////////
 void Move_Watchdog::startMonitor(Robot* robot)
 {
     std::thread t(Move_Watchdog::monitorMove, sensors, robot);
+}
+
+//////////////////////////////////////////////////////////
+void Move_Watchdog::stopMonitor()
+{
+    // Stop the DistanceObject threads.
+    StopUltraSensors();
+
+    // Stop the monitoring of Move_Watchdog
+    Move_Watchdog::alive = false;
 }

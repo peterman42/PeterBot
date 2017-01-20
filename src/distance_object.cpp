@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include "distance_object.h"
 
+bool DistanceObject::alive = true;
+
 ///////////////////////////////////////////////////////////////////////
 void DistanceObject::initialize()
 {
@@ -39,7 +41,7 @@ int DistanceObject::senseObject()
 ///
 void DistanceObject::watchForObjects(DistanceObject* obj)
 {
-    while(alive)
+    while(DistanceObject::alive)
     {
         try
         {

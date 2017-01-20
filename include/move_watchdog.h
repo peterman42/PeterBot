@@ -10,7 +10,7 @@ class Move_Watchdog
 {
 public:
     std::vector<DistanceObject*> sensors;
-
+    static bool alive;
     Move_Watchdog() = default;
 
     explicit Move_Watchdog(std::vector<DistanceObject*> sensors)
@@ -23,7 +23,13 @@ public:
     void StartUltraSensors();
 
     //////////////////////////////////////////////////////////
+    void StopUltraSensors();
+
+    //////////////////////////////////////////////////////////
     void startMonitor(Robot* robot);
+
+    //////////////////////////////////////////////////////////
+    void stopMonitor();
 
 private:
     //////////////////////////////////////////////////////////
