@@ -39,7 +39,7 @@ int DistanceObject::senseObject()
 ///
 void DistanceObject::watchForObjects(DistanceObject* obj)
 {
-    while(1)
+    while(alive)
     {
         try
         {

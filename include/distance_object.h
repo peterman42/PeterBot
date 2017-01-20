@@ -17,13 +17,17 @@ public:
     int triggerPin;
     POSITIONS position;
     uint32_t latestDistance;
+    bool alive;
 
-    DistanceObject() = default;
+    DistanceObject()
+        : alive(true)
+    {}
 
     DistanceObject(int echo, int trigger, POSITIONS pos)
         : echoPin(echo)
         , triggerPin(trigger)
         , position(pos)
+        , alive(true)
     {}
 
     ~DistanceObject() = default;
