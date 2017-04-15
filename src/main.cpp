@@ -1,6 +1,5 @@
 #include <functional>
 #include <string>
-#include <thread>
 #include <vector>
 #include "robot.h"
 #include "serverBot.h"
@@ -9,7 +8,7 @@
 
 #define SERVER_PORT 8888
 #define ULTRA_SENSORS_NUM 4
-
+#define PWM_RANGE 100
 struct PinConfiguration
 {
 	int enablePin_motor1;
@@ -38,19 +37,22 @@ struct PinConfiguration
                 , in2Pin_motor2(in2Motor2)
 	{
 
-		pinMode(enablePin_motor1,INPUT);
-		pinMode(in1Pin_motor1,INPUT);
-		pinMode(in2Pin_motor1,INPUT);
-		pinMode(enablePin_motor2,INPUT);
-		pinMode(in1Pin_motor2,INPUT);
-		pinMode(in2Pin_motor2,INPUT);
+        softPwmCreate(enablePin_motor1,0,PWM_RANGE);
+        //pinMode(enablePin_motor1,INPUT);
+        pinMode(in1Pin_motor1,INPUT);
+        pinMode(in2Pin_motor1,INPUT);
 
-		digitalWrite(enablePin_motor1,0);
-		digitalWrite(in1Pin_motor1,0);
-		digitalWrite(in2Pin_motor1,0);
-		digitalWrite(enablePin_motor2,0);
-		digitalWrite(in1Pin_motor2,0);
-		digitalWrite(in2Pin_motor2,0);
+        softPwmCreate(enablePin_motor2,0,PWM_RANGE);
+        //pinMode(enablePin_motor2,INPUT);
+        pinMode(in1Pin_motor2,INPUT);
+        pinMode(in2Pin_motor2,INPUT);
+
+        digitalWrite(enablePin_motor1,0);
+        digitalWrite(in1Pin_motor1,0);
+        digitalWrite(in2Pin_motor1,0);
+        digitalWrite(enablePin_motor2,0);
+        digitalWrite(in1Pin_motor2,0);
+        digitalWrite(in2Pin_motor2,0);
 	}
 };
 
@@ -59,8 +61,8 @@ void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 {
 	robot.init(2);
 
-	pinMode(pinConfig.enablePin_motor1,PWM_OUTPUT);
-	pinMode(pinConfig.in1Pin_motor1,OUTPUT);
+    //pinMode(pinConfig.enablePin_motor1,PWM_OUTPUT);
+    pinMode(pinConfig.in1Pin_motor1,OUTPUT);
 	pinMode(pinConfig.in2Pin_motor1,OUTPUT);
     robot.addWheel(POSITIONS::FRONT_LEFT
 		,0
@@ -69,7 +71,7 @@ void RobotConfiguration(Robot& robot, PinConfiguration& pinConfig)
 		,pinConfig.in2Pin_motor1);
 
 
-	pinMode(pinConfig.enablePin_motor2,PWM_OUTPUT);
+    //pinMode(pinConfig.enablePin_motor2,PWM_OUTPUT);
      	pinMode(pinConfig.in1Pin_motor2,OUTPUT);
        	pinMode(pinConfig.in2Pin_motor2,OUTPUT);
         robot.addWheel(POSITIONS::FRONT_RIGHT
@@ -99,12 +101,12 @@ void InitUltraSensors(std::vector<DistanceObject*>& sensors)
 
 int main()
 {
-	Robot robot;
-	Robot* _robot = &robot;
+    Robot robot;
+    Robot* _robot = &robot;
     robot.distanceThreshold = 10;
 
-	ServerBot server(SERVER_PORT);
-    float speed = 1023;
+    ServerBot server(SERVER_PORT);
+    float speed = 100;
     std::vector<DistanceObject*> UltraSensors;
     UltraSensors.reserve(ULTRA_SENSORS_NUM);
     Move_Watchdog move_watchdog(UltraSensors);
@@ -120,49 +122,51 @@ int main()
     move_watchdog.StartUltraSensors();
     move_watchdog.startMonitor(_robot);
 
-	server.Start();
-	server.Listen([_robot,speed](int data)
-	{
-		try
-		{	MOVE move = MOVE::STOP;
-			switch(data)
-			{
-				case 0:
-				{
-					move = MOVE::FRONT;
-					break;	
-				}
+
+    //app.port(SERVER_PORT).run();
+    server.Start();
+    server.Listen([_robot,speed](int data)
+    {
+        try
+        {	MOVE move = MOVE::STOP;
+            switch(data)
+            {
+                case 0:
+                {
+                    move = MOVE::FRONT;
+                    break;
+                }
                 case 1:
                 {
                     move = MOVE::BACK;
-					break;
+                    break;
                 }
                 case 2:
                 {
                     move = MOVE::RIGHT;
-					break;
+                    break;
                 }
                 case 3:
                 {
                     move = MOVE::LEFT;
-					break;
+                    break;
                 }
                 case 4:
                 {
                     move = MOVE::STOP;
-					break;
+                    break;
                 }
             }
-			_robot->makeMove(move,speed);
-		}
-		catch(std::exception& e)
-		{
+            _robot->makeMove(move,speed);
+        }
+        catch(std::exception& e)
+        {
 
-		}
-		catch(...)
-		{
-		}
-	});
+        }
+        catch(...)
+        {
+        }
+    });
 
 }
 

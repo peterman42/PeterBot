@@ -6,7 +6,8 @@ void Wheel::start(int speed){
 #ifdef ARDUINO_UNO
     analogWrite(pin[0],speed);
 #else
-    pwmWrite(pin[0],speed);
+    //pwmWrite(pin[0],speed);
+    softPwmWrite(pin[0],speed);
 #endif
     digitalWrite(pin[1], directionA);
     digitalWrite(pin[2], directionB);
@@ -21,7 +22,8 @@ void Wheel::stop(){
 #ifdef ARDUINO_UNO
         analogWrite(pin[0],0);
 #else
-        pwmWrite(pin[0],0);
+        //pwmWrite(pin[0],0);
+        softPwmWrite(pin[0],0);
 #endif
 
         digitalWrite(pin[1], 0);
