@@ -9,7 +9,7 @@ void Move_Watchdog::monitorMove(const std::vector<DistanceObject*>& sensors,  Ro
     {
         while(Move_Watchdog::alive)
         {
-            delay(500);
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
             for(auto sensor : sensors)
             {
                 if (sensor->latestDistance < robot->distanceThreshold)
@@ -30,7 +30,11 @@ void Move_Watchdog::StartUltraSensors()
     for(auto sensor : sensors)
     {
         if(sensor)
-            std::thread t(DistanceObject::watchForObjects,sensor);
+        {
+                std::thread t(DistanceObject::watchForObjects,sensor);
+                t.detach();
+        }
+
     }
 }
 
@@ -44,6 +48,7 @@ void Move_Watchdog::StopUltraSensors()
 void Move_Watchdog::startMonitor(Robot* robot)
 {
     std::thread t(Move_Watchdog::monitorMove, sensors, robot);
+    t.detach();
 }
 
 //////////////////////////////////////////////////////////
