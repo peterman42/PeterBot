@@ -13,6 +13,7 @@
 #endif
 #else
 #include <wiringPi.h>
+#include <softPwm.h>
 #endif
 
 #define WHEELS 4
