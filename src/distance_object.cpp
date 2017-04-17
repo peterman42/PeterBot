@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <thread>
+#include <chrono>
 #include "distance_object.h"
 
 bool DistanceObject::alive = true;
@@ -45,7 +47,7 @@ void DistanceObject::watchForObjects(DistanceObject* obj)
     {
         try
         {
-            delay(1000);
+            std::this_thread::sleep_for(std::chrono::milliseconds(1000));
             // Sense any object.
             if(obj)
                 obj->senseObject();
