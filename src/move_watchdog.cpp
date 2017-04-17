@@ -3,14 +3,14 @@
 bool Move_Watchdog::alive = true;
 
 //////////////////////////////////////////////////////////
-void Move_Watchdog::monitorMove(const std::vector<DistanceObject*>& sensors,  Robot* const robot)
+void Move_Watchdog::monitorMove(std::vector<DistanceObject*>* sensors,  Robot* const robot)
 {
     try
     {
         while(Move_Watchdog::alive)
         {
             std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            for(auto sensor : sensors)
+            for(auto sensor : *sensors)
             {
                 if (sensor->latestDistance < robot->distanceThreshold)
                     if (robot) robot->stopMove();
@@ -27,7 +27,7 @@ void Move_Watchdog::monitorMove(const std::vector<DistanceObject*>& sensors,  Ro
 void Move_Watchdog::StartUltraSensors()
 {
     // Start the sensors to trigger waves and receive echoes.
-    for(auto sensor : sensors)
+    for(auto sensor : *sensors)
     {
         if(sensor)
         {
