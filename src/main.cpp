@@ -7,8 +7,11 @@
 #include "move_watchdog.h"
 
 #define SERVER_PORT 8888
-#define ULTRA_SENSORS_NUM 4
+#define ULTRA_SENSORS_NUM 1
 #define PWM_RANGE 100
+#define DISTANCE_THRESHOLD 20
+
+
 struct PinConfiguration
 {
 	int enablePin_motor1;
@@ -86,30 +89,31 @@ void InitUltraSensors(std::vector<DistanceObject*>& sensors)
 {
     // Initialize the ultrasonic sensors and store them into a vector.
 
-    DistanceObject* UltraSensor1 = new DistanceObject;
+    DistanceObject* UltraSensor1 = new DistanceObject(0,7,POSITIONS::FRONT_RIGHT);
+    UltraSensor1->initialize();
     sensors.emplace_back(UltraSensor1);
 
-    DistanceObject* UltraSensor2 = new DistanceObject;
-    sensors.emplace_back(UltraSensor2);
-
-    DistanceObject* UltraSensor3 = new DistanceObject;
-    sensors.emplace_back(UltraSensor3);
-
-    DistanceObject* UltraSensor4 = new DistanceObject;
-    sensors.emplace_back(UltraSensor4);
+    //DistanceObject* UltraSensor2 = new DistanceObject;
+    //sensors.emplace_back(UltraSensor2);
+    //
+    //DistanceObject* UltraSensor3 = new DistanceObject;
+    //sensors.emplace_back(UltraSensor3);
+    //
+    //DistanceObject* UltraSensor4 = new DistanceObject;
+    //sensors.emplace_back(UltraSensor4);
 }
 
 int main()
 {
     Robot robot;
     Robot* _robot = &robot;
-    robot.distanceThreshold = 10;
+    robot.distanceThreshold = DISTANCE_THRESHOLD;
 
     ServerBot server(SERVER_PORT);
     float speed = 100;
     std::vector<DistanceObject*> UltraSensors;
     UltraSensors.reserve(ULTRA_SENSORS_NUM);
-    Move_Watchdog move_watchdog(UltraSensors);
+    Move_Watchdog move_watchdog(&UltraSensors);
 
     wiringPiSetup();
 
