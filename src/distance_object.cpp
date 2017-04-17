@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <thread>
 #include <chrono>
+#include <iostream>
 #include "distance_object.h"
 
 bool DistanceObject::alive = true;
@@ -16,25 +17,31 @@ void DistanceObject::initialize()
 
     // Initialize to LOW the trigger pin.
     digitalWrite(triggerPin,LOW);
-    delay(100);
+    std::this_thread::sleep_for(std::chrono::milliseconds(100));
 }
 ///////////////////////////////////////////////////////////////////////
 int DistanceObject::senseObject()
 {
     // Send beacon signal.
     digitalWrite(triggerPin,HIGH);
-    delayMicroseconds(20);
+    delayMicroseconds(10);
     digitalWrite(triggerPin,LOW);
 
     //Wait for echo start.
     while(digitalRead(echoPin) == LOW);
 
-    long startTime = micros();
+    std::chrono::time_point<std::chrono::system_clock> start, end;
+
+    start = std::chrono::system_clock::now();
+
     //Wait for echo end.
     while(digitalRead(echoPin) == HIGH);
-    long durationTime = micros() - startTime;
 
-    latestDistance = 17150 * durationTime;
+    end = std::chrono::system_clock::now();
+    std::chrono::duration<double> elapsed_seconds = end - start;
+
+    latestDistance = elapsed_seconds.count() * 17150;
+
     return latestDistance;
 }
 
