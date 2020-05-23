@@ -10,15 +10,25 @@
 class Move_Watchdog
 {
 public:
-    std::vector<DistanceObject*>* sensors;
+    std::vector<DistanceObject*> sensors;
     static bool alive;
     Move_Watchdog() = default;
 
-    explicit Move_Watchdog(std::vector<DistanceObject*>* sensors)
-        : sensors(sensors)
-    {}
+    explicit Move_Watchdog(int numSensors )
+    {
+        sensors.reserve(numSensors);
+    }
 
-    ~Move_Watchdog() = default;
+    ~Move_Watchdog()
+    {
+        for(auto sensor : sensors)
+        {
+            delete sensor;
+        }
+    }
+
+    //////////////////////////////////////////////////////////
+    void initializeUltraSensors();
 
     //////////////////////////////////////////////////////////
     void StartUltraSensors();
@@ -34,6 +44,6 @@ public:
 
 private:
     //////////////////////////////////////////////////////////
-    static void monitorMove(std::vector<DistanceObject*>* sensors, Robot* const robot);
+    static void monitorMove(std::vector<DistanceObject*> sensors, Robot* const robot);
 };
 #endif

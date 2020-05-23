@@ -1,11 +1,37 @@
 #include "robot.h"
 
 //////////////////////////////////////////////////////////////////
-void  Robot::init(int num)
+void Robot::init(int num)
 {
     //wheels = (Wheel*)malloc(sizeof(Wheel)*num);
     wheels = (Wheel**)malloc(num*sizeof(Wheel*));
     numberOfWheels = num;
+}
+
+
+void Robot::configure(PinConfiguration& pinConfig)
+{
+    init(2);
+
+    //pinMode(pinConfig.enablePin_motor1,PWM_OUTPUT);
+    pinMode(pinConfig.in1Pin_motor1,OUTPUT);
+    pinMode(pinConfig.in2Pin_motor1,OUTPUT);
+    addWheel( POSITIONS::FRONT_LEFT
+            , 0
+            , pinConfig.enablePin_motor1
+            , pinConfig.in1Pin_motor1
+            , pinConfig.in2Pin_motor1);
+
+
+    //pinMode(pinConfig.enablePin_motor2,PWM_OUTPUT);
+    pinMode(pinConfig.in1Pin_motor2,OUTPUT);
+    pinMode(pinConfig.in2Pin_motor2,OUTPUT);
+    addWheel( POSITIONS::FRONT_RIGHT
+            , 1
+            , pinConfig.enablePin_motor2
+            , pinConfig.in1Pin_motor2
+            , pinConfig.in2Pin_motor2);
+
 }
 
 void Robot::addWheel(int position, int wheelIndex, int PWM_pin,int directionA_pin,int directionB_pin)

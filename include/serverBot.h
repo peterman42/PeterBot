@@ -11,21 +11,9 @@
 #include <errno.h>
 #include <exception>
 #include <functional>
+#include "robot_commons.h"
 
 #define HANDLE_FUNCTION_REF const std::function<void(int) >&
-#define DEFAULT_SERVER_PORT 8888
-struct ClientMessage
-{
-	int data;
-	bool status;
-    bool keepAlive;
-
-	ClientMessage()
-	: data(0)
-	, status(false)	
-    , keepAlive(true)
-	{}
-};
 
 class ServerBot
 {
