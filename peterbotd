@@ -42,12 +42,9 @@ start()
 	touch "$SERVER_PID" "$LOGFILE_SERVER" 
 	touch "$CAMERA_PID" "$LOGFILE_CAMERA"
 	/usr/local/build/PeterBot >> $LOGFILE_SERVER &
+	/opt/vc/bin/raspivid -b 50000000 -o - -t 0 -hf -w 1280 -h 720 -fps 25 -rot 180 | cvlc -vvv stream:///dev/stdin --sout '#standard{access=http,mux=ts,dst=:8090}' :demux=h264 >> $LOGFILE_CAMERA &
 	echo $! > $SERVER_PID 
-	# /var/run/peterbotd/peterbotd.pid
-
-	$MJPG_STREAMER_PATH/mjpg_streamer -o "$MJPG_STREAMER_PATH/output_http.so -w $MJPG_STREAMER_PATH/www -c peterman:123456" -i "$MJPG_STREAMER_PATH/input_raspicam.so -x 1280 -y 720 -fps 15 -ex night -rot 180" >> $LOGFILE_CAMERA &
 	echo $! > $CAMERA_PID 
-	# /var/run/peterbotd/peterbotd.pid
 
 	return 0	
 }
