@@ -7,9 +7,6 @@
 class Wheel: public Component
 {
 public:
-	int directionA;
-	int directionB;
-
     Wheel()
 		: Component(3)
 	{};
@@ -35,8 +32,11 @@ public:
 	///////////////////////////////////////////////////////////////////////
 	int & getPosition();
 	///////////////////////////////////////////////////////////////////////
-	void setDirections(int directionA, int directionB);
+    void setDirections(int directionA_value, int directionB_value);
 private:
 	int position;
+    int directionA_value;
+    int directionB_value;
+
 };
 #endif
