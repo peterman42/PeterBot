@@ -12,7 +12,10 @@ public:
 
     virtual ~Move()
     {
-        // TODO :: Free the Wheel** double pointer
+        for(int i =0; i< numberOfWheels; ++i)
+            delete wheels[i];
+
+        delete wheels;
     }
 
     //////////////////////////////////////////////////////////////////
