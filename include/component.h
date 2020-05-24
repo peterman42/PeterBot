@@ -6,7 +6,7 @@
 class Component
 {
 public:
-	Component() :pin(nullptr){};
+    Component() :pin(nullptr){}
     explicit Component(int numberOfpins) :pin(nullptr)
 	{
 		init(numberOfpins);
@@ -14,13 +14,13 @@ public:
 	
 	virtual ~Component()
 	{
-		//free(pin);
+        free(pin);
 	}
 
+    //////////////////////////////////////////////////////////////////
 	virtual void setPin(int currentpin, int index)
 	{
-		//Serial.println("PIN IS : " + String(currentpin));
-		Component::pin[index] = currentpin;
+        Component::pin[index] = currentpin;
 	}
 
 	//////////////////////////////////////////////////////////////////
