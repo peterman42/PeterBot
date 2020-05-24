@@ -8,12 +8,12 @@ class Move
 public:
 
     Move() = default;
-	Move(float speed,Wheel** wheels)
-	{
-		setSpeed(speed);
-		setWheels(wheels);
-	};
-    virtual ~Move() = default;
+    Move(float speed,Wheel** wheels);
+
+    virtual ~Move()
+    {
+        // TODO :: Free the Wheel** double pointer
+    }
 
 	virtual void begin(int num)=0;
 	virtual void stop(int num) = 0;

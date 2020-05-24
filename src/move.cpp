@@ -1,6 +1,13 @@
 #include "move.h"
 
 //////////////////////////////////////////////////////////////////
+Move::Move(float speed,Wheel** wheels)
+{
+    setSpeed(speed);
+    setWheels(wheels);
+}
+
+//////////////////////////////////////////////////////////////////
 void Move::setWheels(Wheel** wheels)
 {
     Move::wheels = wheels;
