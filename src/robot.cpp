@@ -83,7 +83,6 @@ Move* Robot::getMove(MOVE m, float speed)
         return new RobotLeft(speed, wheels);
       case MOVE::STOP:
       default:
-        stopMove(); // stop the previous move if already there is one.
         return nullptr;
     }
 }
