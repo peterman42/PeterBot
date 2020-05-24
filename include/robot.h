@@ -53,11 +53,13 @@ public:
 
 	void init(int num);
     void configure(PinConfiguration& pinConfig);
-	void makeMove(int m, float speed);
+    void makeMove(MOVE m, float speed);
 	void stopMove();
 	void addWheel(int position, int wheelIndex, int PWM_pin, int directionA_pin, int directionB_pin);
 	bool isMoving();
 	//void executeMove();
 	//void loadRoutes();
+private:
+    Move* getMove(MOVE m, float speed);
 };
 #endif
