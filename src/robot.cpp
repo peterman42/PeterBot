@@ -8,7 +8,7 @@ void Robot::init(int num)
     numberOfWheels = num;
 }
 
-
+//////////////////////////////////////////////////////////////////
 void Robot::configure(PinConfiguration& pinConfig)
 {
     init(2);
@@ -34,55 +34,20 @@ void Robot::configure(PinConfiguration& pinConfig)
 
 }
 
+//////////////////////////////////////////////////////////////////
 void Robot::addWheel(int position, int wheelIndex, int PWM_pin,int directionA_pin,int directionB_pin)
 {
     Wheel* new_wheel = new Wheel(PWM_pin,directionA_pin,directionB_pin);
     new_wheel->setPosition(position);
     wheels[wheelIndex] = new_wheel;
 }
+
 //////////////////////////////////////////////////////////////////
-void Robot::makeMove(int m, float speed){
-
-  if (m == ((int)MOVE::FRONT))
-  {
+void Robot::makeMove(MOVE m, float speed)
+{
     stopMove(); // stop the previous move if already there is one.
-
-    RobotFront* r = new RobotFront(speed, wheels);
-    move = r;
-    move->begin(numberOfWheels);
-    return;
-  }
-  else if (m == ((int)MOVE::BACK))
-  {
-      stopMove(); // stop the previous move if already there is one.
-      RobotBack* b = new RobotBack(speed, wheels);
-      move = b;
-      move->begin(numberOfWheels);
-      return;
-  }
-  else if (m == ((int)MOVE::RIGHT))
-  {
-
-    stopMove(); // stop the previous move if already there is one.
-    RobotRight* r = new RobotRight(speed, wheels);
-    move = r;
-    move->begin(numberOfWheels);
-    return;
-  }
-  else if (m == ((int)MOVE::LEFT))
-  {
-
-    stopMove(); // stop the previous move if already there is one.
-    RobotLeft* r = new RobotLeft(speed, wheels);
-    move = r;
-    move->begin(numberOfWheels);
-    return;
-  }
-  else if (m == ((int)MOVE::STOP))
-  {
-      stopMove(); // stop the previous move if already there is one.
-      return;
-  }
+    move = getMove(m, speed);
+    if(move) move->begin(numberOfWheels);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -102,6 +67,25 @@ bool Robot::isMoving()
     return (move != nullptr);
 }
 
+//////////////////////////////////////////////////////////////////
+Move* Robot::getMove(MOVE m, float speed)
+{
+    switch(m)
+    {
+      case MOVE::FRONT:
+        return new RobotFront(speed, wheels);
+      case MOVE::BACK:
+        return new RobotBack(speed, wheels);
+      case MOVE::RIGHT:
+        return new RobotRight(speed, wheels);
+      case MOVE::LEFT:
+        return new RobotLeft(speed, wheels);
+      case MOVE::STOP:
+      default:
+        stopMove(); // stop the previous move if already there is one.
+        return nullptr;
+    }
+}
 
 //////////////////////////////////////////////////////////////////
 //void Robot::executeRoute(std::string routeName){
