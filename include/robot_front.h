@@ -9,8 +9,8 @@ class RobotFront : public Move
 public:
 
     RobotFront() = default;
-	RobotFront(float speed, Wheel** wheels) 
-		: Move(speed, wheels)
+    RobotFront(float speed, Wheel** wheels, int numberOfWheels)
+        : Move(speed, wheels, numberOfWheels)
 	{};
     virtual ~RobotFront() = default;
 	

@@ -8,9 +8,9 @@ class RobotRight: public Move
 public:
 
     RobotRight() = default;
-	RobotRight(float speed, Wheel** wheels) 
-		: Move(speed, wheels)
-	{};
+    RobotRight(float speed, Wheel** wheels, int numberOfWheels)
+        : Move(speed, wheels, numberOfWheels)
+    {}
     virtual ~RobotRight() = default;
 
 	///////////////////////////////////////////////////////////

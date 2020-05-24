@@ -8,8 +8,8 @@ class RobotBack : public Move
 public:
 
     RobotBack() = default;
-	RobotBack(float speed, Wheel** wheels) 
-		: Move(speed, wheels){};
+    RobotBack(float speed, Wheel** wheels, int numberOfWheels)
+        : Move(speed, wheels, numberOfWheels){};
     virtual	~RobotBack() = default;
 
 	//////////////////////////////////////////////////////////

@@ -1,10 +1,11 @@
 #include "move.h"
 
 //////////////////////////////////////////////////////////////////
-Move::Move(float speed,Wheel** wheels)
+Move::Move(float speed,Wheel** wheels, int numberOfWheels)
 {
     setSpeed(speed);
     setWheels(wheels);
+    setNumberOfWheels(numberOfWheels);
 }
 
 //////////////////////////////////////////////////////////////////
@@ -29,4 +30,15 @@ void Move::setSpeed(float speed)
 float& Move::getSpeed()
 {
     return Move::speed;
+}
+
+//////////////////////////////////////////////////////////////////
+void Move::setNumberOfWheels(int numberOfWheels)
+{
+    Move::numberOfWheels = numberOfWheels;
+}
+//////////////////////////////////////////////////////////////////
+int& Move::getNumberOfWheels()
+{
+    return Move::numberOfWheels;
 }

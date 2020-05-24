@@ -74,13 +74,13 @@ Move* Robot::getMove(MOVE m, float speed)
     switch(m)
     {
       case MOVE::FRONT:
-        return new RobotFront(speed, wheels);
+        return new RobotFront(speed, wheels, numberOfWheels);
       case MOVE::BACK:
-        return new RobotBack(speed, wheels);
+        return new RobotBack(speed, wheels, numberOfWheels);
       case MOVE::RIGHT:
-        return new RobotRight(speed, wheels);
+        return new RobotRight(speed, wheels, numberOfWheels);
       case MOVE::LEFT:
-        return new RobotLeft(speed, wheels);
+        return new RobotLeft(speed, wheels, numberOfWheels);
       case MOVE::STOP:
       default:
         return nullptr;

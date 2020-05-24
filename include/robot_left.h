@@ -8,8 +8,8 @@ class RobotLeft : public Move
 public:
 
     RobotLeft() = default;
-	RobotLeft(float speed, Wheel** wheels) 
-		: Move(speed, wheels)
+    RobotLeft(float speed, Wheel** wheels, int numberOfWheels)
+        : Move(speed, wheels, numberOfWheels)
 	{};
     virtual ~RobotLeft() = default;
 	
