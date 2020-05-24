@@ -17,14 +17,6 @@ public:
 		//free(pin);
 	}
 
-	//////////////////////////////////////////////////////////////////
-	virtual void init(int num)
-	{
-		Component::pin = (int*)malloc(sizeof(int)*num);
-		Component::numberOfPins = num;
-	}
-
-	//////////////////////////////////////////////////////////////////
 	virtual void setPin(int currentpin, int index)
 	{
 		//Serial.println("PIN IS : " + String(currentpin));
@@ -46,5 +38,8 @@ public:
 	
 	int* pin;
 	int numberOfPins;
+private :
+    //////////////////////////////////////////////////////////////////
+    void init(int num);
 };
 #endif

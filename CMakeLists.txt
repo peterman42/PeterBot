@@ -14,7 +14,8 @@ set(SOURCES src/serverBot.cpp
             src/wheel.cpp 
             src/distance_object.cpp 
             src/move_watchdog.cpp 
-            src/move.cpp)
+            src/move.cpp
+            src/component.cpp)
 
 if(WIN32)
     set(HEADERS /usr/local/include /usr/include )
