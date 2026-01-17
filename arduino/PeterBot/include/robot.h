@@ -5,7 +5,6 @@
 #include <stdint.h>
 #include <vector>
 #include "robot_commons.h"
-#include "distance_object.h"
 #include "wheel.h"
 #include "move.h"
 #include "robot_right.h"
