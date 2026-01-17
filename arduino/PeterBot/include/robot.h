@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdint.h>
-#include <vector>
 #include "robot_commons.h"
 #include "wheel.h"
 #include "move.h"
