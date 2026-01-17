@@ -67,13 +67,13 @@ struct PinConfiguration
                 , in2Pin_motor2(in2Motor2)
     {
 
-        softPwmCreate(enablePin_motor1,0,PWM_RANGE);
-        //pinMode(enablePin_motor1,INPUT);
+        //softPwmCreate(enablePin_motor1,0,PWM_RANGE);
+        pinMode(enablePin_motor1,INPUT);
         pinMode(in1Pin_motor1,INPUT);
         pinMode(in2Pin_motor1,INPUT);
 
-        softPwmCreate(enablePin_motor2,0,PWM_RANGE);
-        //pinMode(enablePin_motor2,INPUT);
+        //softPwmCreate(enablePin_motor2,0,PWM_RANGE);
+        pinMode(enablePin_motor2,INPUT);
         pinMode(in1Pin_motor2,INPUT);
         pinMode(in2Pin_motor2,INPUT);
 
