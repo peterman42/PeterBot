@@ -9,11 +9,12 @@ Robot robot;
 float speed = 100;
 
 void setup() {
-
+  robot.configure(pinConfig);
   robot.distanceThreshold = DISTANCE_THRESHOLD;
 }
 
 void loop() {
+  Serial.println("Waiting for command...");
   while (mySerial.available()) {
     int data = mySerial.read();
     MOVE move = MOVE::STOP;
@@ -45,6 +46,7 @@ void loop() {
             break;
         }
     }
+    Serial.println("Executing move..." + String(move));
     robot.makeMove(move,speed);
     }
  
