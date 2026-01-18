@@ -3,8 +3,8 @@
 #include "robot.h"
 #include <SoftwareSerial.h>
 
-
 SoftwareSerial mySerial(3, 4); // RX, TX
+PinConfiguration pinConfig(1,4,5,23,27,28);
 Robot robot;
 float speed = 100;
 
