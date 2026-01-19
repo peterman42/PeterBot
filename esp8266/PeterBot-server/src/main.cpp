@@ -29,6 +29,11 @@ void setup() {
         Serial.println(request->pathArg(0));
         request->send(200, "text/plain", "Moved");
       } );
+  );
+  server.onNotFound([](AsyncWebServerRequest *request){
+      request->send(404, "text/plain", "Not found");
+    } 
+  );
   server.begin();
 }
 
