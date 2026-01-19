@@ -16,6 +16,7 @@ const char* wifi_ssid = "COSMOTE-593676";
 const char* wifi_password = "h9c3c4sc37gppn38b278";
 
 void setup() {
+  Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   WiFi.begin(wifi_ssid, wifi_password);
   if (WiFi.waitForConnectResult(TIMEOUT) != WL_CONNECTED) {
