@@ -29,6 +29,7 @@ void setup() {
         Serial.println(request->pathArg(0));
         request->send(200, "text/plain", "Moved");
       } );
+  server.begin();
 }
 
 
