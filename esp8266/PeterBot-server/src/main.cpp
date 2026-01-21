@@ -49,6 +49,7 @@ void setup() {
       request->send(422, "text/plain", "Invalid move command");
       return;
     }
+    Serial.println(move_command);
     request->send(200, "text/plain", "Moved");
   });
 
