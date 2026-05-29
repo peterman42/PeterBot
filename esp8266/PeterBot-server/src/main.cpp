@@ -18,6 +18,9 @@ const char* wifi_password = "h9c3c4sc37gppn38b278";
 
 int extract_move_command(const String& url){
 
+  if(url.indexOf("/move/0") != -1) {
+    return 0;
+  }
   if(url.indexOf("/move/1") != -1) {
     return 1;
   }
@@ -37,11 +40,11 @@ void setup() {
   Serial.begin(115200);
   WiFi.mode(WIFI_STA);
   WiFi.begin(wifi_ssid, wifi_password);
-  if (WiFi.waitForConnectResult(TIMEOUT) != WL_CONNECTED) {
-    Serial.println("Failed to connect to WiFi");
-    return;
+  if (int8_t r = WiFi.waitForConnectResult(TIMEOUT) != WL_CONNECTED) {
+    Serial.println("Failed to connect to WiFi with status: " + String(r));
+    // return;
   }
-    Serial.println(WiFi.localIP());
+
 
   server.on("/move", HTTP_GET, [](AsyncWebServerRequest *request){
     int move_command = extract_move_command(request->url());
