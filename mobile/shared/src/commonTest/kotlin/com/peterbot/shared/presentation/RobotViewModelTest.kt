@@ -9,7 +9,9 @@ import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
@@ -100,7 +102,7 @@ class RobotViewModelTest {
     }
 
     @Test
-    fun testMoveForwardCommandSuccess() {
+    fun testMoveForwardCommandSuccess() = runTest {
         val configRepo = FakeConfigRepository()
         var callCount = 0
         val mockEngine = MockEngine { request ->
@@ -111,6 +113,7 @@ class RobotViewModelTest {
         val viewModel = RobotViewModel(configRepo, httpClient)
 
         viewModel.moveForward()
+        advanceUntilIdle()
 
         assertEquals(1, callCount)
         assertEquals("Command executed successfully", viewModel.uiState.value.statusMessage)
