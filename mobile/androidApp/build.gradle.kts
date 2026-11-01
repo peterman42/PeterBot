@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.peterbot.android"
-    compileSdk = 35
+    compileSdk = 33
 
     defaultConfig {
         applicationId = "com.peterbot.android"
@@ -52,6 +52,10 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation(libs.androidx.core.ktx)
     implementation(libs.ktor.client.okhttp)
-    
+    implementation(libs.exoplayer)
+    // ExoPlayer
+    implementation("com.google.android.exoplayer:exoplayer:2.17.1")
+
     debugImplementation(libs.androidx.compose.ui.tooling)
+
 }

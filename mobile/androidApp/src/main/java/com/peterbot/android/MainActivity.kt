@@ -11,9 +11,11 @@ import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.navigation.compose.composable
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.peterbot.android.ui.screens.ConfigScreen
 import com.peterbot.android.ui.screens.ControlScreen
+import com.peterbot.android.ui.screens.VideoStreamScreen
 import com.peterbot.android.ui.theme.PeterBotTheme
 import com.peterbot.shared.data.local.AndroidKeyValueStorage
 import com.peterbot.shared.data.network.RobotHttpClient
@@ -65,6 +67,9 @@ class MainActivity : ComponentActivity() {
                             onSaveConfig = viewModel::saveConfig
                         )
                     }
+                }
+                composable("video") {
+                    VideoStreamScreen(videoUrl = "http://192.168.1.100:8080/stream")
                 }
             }
         }
